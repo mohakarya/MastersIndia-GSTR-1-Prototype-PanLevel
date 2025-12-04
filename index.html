@@ -4,16 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Masters India GSTR-1 Prototype</title>
-<!-- Tailwind CSS -->
-<script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com/)"></script>
-<!-- React & ReactDOM -->
+<script src="https://cdn.tailwindcss.com"></script>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-<!-- Babel for JSX -->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<!-- Lucide Icons (via CDN for React) -->
 <script src="https://unpkg.com/lucide@latest"></script>
-<!-- Font (Inter) -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 body { font-family: 'Inter', sans-serif; }
@@ -27,13 +22,12 @@ body { font-family: 'Inter', sans-serif; }
 <body class="h-screen overflow-hidden">
 <div id="root" class="h-full"></div>
 
-```
 <script type="text/babel">
     const { useState, useMemo, useEffect } = React;
 
     const IconWrapper = ({ children, size = 24, className = "", ...props }) => (
         <svg
-            xmlns="<http://www.w3.org/2000/svg>"
+            xmlns="http://www.w3.org/2000/svg"
             width={size}
             height={size}
             viewBox="0 0 24 24"
@@ -191,20 +185,37 @@ body { font-family: 'Inter', sans-serif; }
         { title: "Amended Supplies made through E-Commerce Operators", count: 0, value: "₹ 0.00", tax: "₹ 0.00" },
     ];
 
+    // Added missing list of cards for consolidated view
     const PAN_INVOICE_SUMMARY_CARDS = [
-        { title: "B2B Invoice", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
+        { title: "B2B Invoice", count: 17, invoiceValue: "₹2,50,000.00", taxableValue: "₹2,20,000.00", taxLiability: "₹39,600.00" },
         { title: "Amended B2B Invoice", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
-        { title: "B2C Large", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
+        { title: "B2C Large", count: 8, invoiceValue: "₹90,000.00", taxableValue: "₹80,000.00", taxLiability: "₹14,400.00" },
         { title: "Amended B2C Large", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
-        { title: "Credit/Debit Note [R]", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
+        { title: "Credit/Debit Note [R]", count: 4, invoiceValue: "₹-25,000.00", taxableValue: "₹-20,000.00", taxLiability: "₹-3,600.00" },
         { title: "Amended Credit/Debit Note [R]", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
         { title: "Credit/Debit Note [UR]", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
         { title: "Amended Credit/Debit Note [UR]", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
-        { title: "Export", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
+        { title: "Export", count: 2, invoiceValue: "₹1,00,000.00", taxableValue: "₹1,00,000.00", taxLiability: "₹0.00" },
         { title: "Export Amended", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
         { title: "Supplies U/s 9(5)", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
         { title: "Amended Supplies U/s 9(5)", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
     ];
+    // Added missing list of cards for consolidated view - other details
+     const PAN_OTHER_DETAIL_SUMMARY_CARDS = [
+        { title: "B2C Small", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
+        { title: "B2CA Small", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
+        { title: "Nil Rated Supply", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
+        { title: "Advance Received in Current Tax Period", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
+        { title: "Advance Received in Earlier Tax Period", count: 0, value: "₹ 0.00", tax: "₹ 0.00" },
+        { title: "Amended Advance Received in Current Tax Period", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
+        { title: "Amended Advance Received in Earlier Tax Period", count: 0, invoiceValue: "₹0.00", taxableValue: "₹0.00", taxLiability: "₹0.00" },
+        { title: "HSN Summary (B2B)", count: 20, value: "₹ 3,50,000.00", tax: "₹ 30,000.00" },
+        { title: "HSN Summary (B2C)", count: 0, value: "₹ 0.00", tax: "₹ 0.00" },
+        { title: "Document Summary", count: 35, value: "-", tax: "-" },
+        { title: "Supplies made through E-Commerce Operators", count: 0, value: "₹ 0.00", tax: "₹ 0.00" },
+        { title: "Amended Supplies made through E-Commerce Operators", count: 0, value: "₹ 0.00", tax: "₹ 0.00" },
+    ];
+
 
     const UPLOAD_HISTORY_DATA = [
         { id: "1", gstin: "06AACJJ1111H1ZK", category: "Data Import", uploadType: "Summary Upload", uploadDate: "27 Nov 2025, 10:30 AM", uploadedBy: "Rahul Sharma", status: "Processed", errorFile: null },
@@ -575,14 +586,82 @@ body { font-family: 'Inter', sans-serif; }
         };
 
         const handleFileReturn = (singleId = null) => {
-            // Simulation logic skipped for brevity, relies on active GSTINS list
-            console.log(`Filing returns for GSTINs: ${singleId || selectedForFiling.join(', ')} under PAN ${currentPanId}`);
+            // Setup filing progress
+            const gstinsToFile = singleId
+                ? gstins.filter(g => g.id === singleId && g.status === 'Ready')
+                : gstins.filter(g => selectedForFiling.includes(g.id) && g.status === 'Ready');
+
+            if (gstinsToFile.length === 0) {
+                alert("No GSTINs selected or ready for filing.");
+                return;
+            }
+
+            const initialProgress = gstinsToFile.map(g => ({
+                id: g.id,
+                branch: g.branch,
+                status: 'pending',
+                message: 'Waiting to start...',
+            }));
+
+            setFilingProgress(initialProgress);
             setIsFiling(true);
-            setOverallProgress(50); // Simulate progress start
-            setTimeout(() => {
-                setIsFiling(false);
-                setSelectedForFiling([]);
-            }, 3000);
+            setOverallProgress(0);
+
+            // Simulation of filing process
+            let step = 0;
+            const totalSteps = gstinsToFile.length * 3; // 3 steps per GSTIN (Start, Verify, File)
+            let currentFilingIndex = 0;
+
+            const fileNextGstin = () => {
+                if (currentFilingIndex >= gstinsToFile.length) {
+                    setOverallProgress(100);
+                    setTimeout(() => {
+                        // Reset filing after a short delay
+                        setIsFiling(false);
+                        setSelectedForFiling([]);
+                        alert("Filing simulation complete!");
+                    }, 2000);
+                    return;
+                }
+
+                const currentGstin = gstinsToFile[currentFilingIndex];
+
+                // Step 1: Start
+                setTimeout(() => {
+                    setFilingProgress(prev => prev.map(p => p.id === currentGstin.id ? { ...p, status: 'verifying', message: 'Starting process...' } : p));
+                    step++;
+                    setOverallProgress(Math.round((step / totalSteps) * 100));
+                }, 500);
+
+                // Step 2: Verify
+                setTimeout(() => {
+                    // 20% chance of failure for demo
+                    const isSuccess = Math.random() > 0.2;
+                    if (isSuccess) {
+                        setFilingProgress(prev => prev.map(p => p.id === currentGstin.id ? { ...p, status: 'verifying', message: 'Verifying with GST Portal...' } : p));
+                    } else {
+                        setFilingProgress(prev => prev.map(p => p.id === currentGstin.id ? { ...p, status: 'failed', message: 'Verification Failed (Server Timeout)' } : p));
+                        currentFilingIndex++;
+                        fileNextGstin(); // Move to next even on failure
+                    }
+                    step++;
+                    setOverallProgress(Math.round((step / totalSteps) * 100));
+                }, 1500);
+
+                // Step 3: File
+                setTimeout(() => {
+                    const status = filingProgress.find(p => p.id === currentGstin.id).status;
+                    if (status !== 'failed') {
+                        setFilingProgress(prev => prev.map(p => p.id === currentGstin.id ? { ...p, status: 'verified', message: 'Filed successfully! ACK: AA27022025' } : p));
+                    }
+                    step++;
+                    setOverallProgress(Math.round((step / totalSteps) * 100));
+                    currentFilingIndex++;
+                    fileNextGstin(); // Continue recursion
+                }, 3000);
+            };
+
+            fileNextGstin();
         };
 
         const handleViewPanDetails = () => {
@@ -670,6 +749,7 @@ body { font-family: 'Inter', sans-serif; }
                                         <th className="px-6 py-3 font-medium">State</th>
                                         <th className="px-6 py-3 font-medium text-right">Taxable Value</th>
                                         <th className="px-6 py-3 font-medium text-right">Tax Liability</th>
+                                        <th className="px-6 py-3 font-medium">Status</th>
                                         <th className="px-6 py-3 font-medium text-right">Actions</th>
                                     </tr>
                                 </thead>
@@ -683,13 +763,14 @@ body { font-family: 'Inter', sans-serif; }
                                             <td className="px-6 py-4 text-gray-600">{gstin.state}</td>
                                             <td className="px-6 py-4 text-right font-mono text-gray-600">₹ {gstin.taxableValue.toLocaleString()}</td>
                                             <td className="px-6 py-4 text-right font-mono font-medium text-gray-900">₹ {gstin.liability.toLocaleString()}</td>
+                                            <td className="px-6 py-4"><StatusBadge status={gstin.status} /></td>
                                             <td className="px-6 py-4 text-right">
                                                 {gstin.status === 'Error' ? (
                                                     <button
                                                         onClick={() => { setEditingIndex(idx); setActiveTab('Prepare'); }}
                                                         className="text-blue-600 hover:text-blue-800 text-xs font-semibold hover:underline"
                                                     >
-                                                        View Details
+                                                        Fix Errors
                                                     </button>
                                                 ) : (
                                                     <button
@@ -1155,7 +1236,7 @@ body { font-family: 'Inter', sans-serif; }
                         {/* START: Merged Tab and Mode Selection Area */}
                         <div className="flex justify-between items-end border-b border-gray-200 mb-6 shrink-0">
                             {/* Tabs */}
-                            <div className="flex space-x-6">
+                            <div className="flex space-x-8">
                                 {['Pending for upload', 'Upload History', 'Compare Data'].map(subTab => (
                                     <button
                                         key={subTab}
@@ -1169,6 +1250,14 @@ body { font-family: 'Inter', sans-serif; }
 
                             {/* Right side actions - Mode switch is only shown for Pending tab */}
                             <div className="flex flex-col items-end mb-2 gap-2">
+                                {uploadSubTab === 'Pending' && (
+                                    <div className="flex items-center gap-3">
+                                         <div className="flex bg-white border border-gray-300 p-1 rounded-md">
+                                            <button onClick={() => setUploadMode('Bulk')} className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${uploadMode === 'Bulk' ? 'bg-[#1a2332] text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'}`}>Bulk Upload</button>
+                                            <button onClick={() => setUploadMode('Single')} className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${uploadMode === 'Single' ? 'bg-[#1a2332] text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'}`}>Single GSTIN</button>
+                                        </div>
+                                    </div>
+                                )}
                                 {uploadSubTab === 'Compare' ? (
                                     <div className="flex gap-3">
                                         <a href="#" className="text-xs font-medium text-blue-700 flex items-center hover:underline">
@@ -1313,9 +1402,15 @@ body { font-family: 'Inter', sans-serif; }
                                     );
                                 } else {
                                     // Single Upload Pending View (Uses reusable component)
+                                    // Need to force editingIndex for this view
+                                    if (editingIndex === -1 && gstins.length > 0) {
+                                         setEditingIndex(0);
+                                    }
+                                    if (!currentEditingGstin) return <EmptyStateBlock title="Please select a GSTIN from the dropdown above." />;
+
                                     return (
                                         <div className="-mx-6 -my-6 h-full">
-                                            <SingleUploadViewUI gstin={gstins[selectedGstinIndex]} isSlideOver={false} />
+                                            <SingleUploadViewUI gstin={currentEditingGstin} isSlideOver={false} />
                                         </div>
                                     );
                                 }
@@ -1537,7 +1632,7 @@ body { font-family: 'Inter', sans-serif; }
                         <div className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
                             <div className="p-6 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
                                 <div>
-                                    <h3 className="text-lg font-bold text-gray-800">Filing Returns via EVC</h3>
+                                    <h3 className="text-lg font-bold text-gray-800">Filing Returns via {filingMode}</h3>
                                     <p className="text-sm text-gray-500">Processing selected GSTINs securely.</p>
                                 </div>
                                 <div className="text-right">
@@ -1702,11 +1797,12 @@ body { font-family: 'Inter', sans-serif; }
                                         <tr>
                                             <th className="px-6 py-3 w-10 bg-gray-50"></th>
                                             <th className="px-6 py-3 font-medium bg-gray-50">GSTIN Details</th>
+                                            <th className="px-6 py-3 font-medium text-right bg-gray-50">Return Period</th>
                                             <th className="px-6 py-3 font-medium text-right bg-gray-50">Taxable Value</th>
                                             <th className="px-6 py-3 font-medium text-right bg-gray-50">Tax Liability</th>
                                             <th className="px-6 py-3 font-medium bg-gray-50">Status</th>
                                             <th className="px-6 py-3 font-medium bg-gray-50">OTP Verified</th>
-                                            <th className="px-6 py-3 font-medium bg-gray-50">Return Type</th>
+                                            <th className="px-6 py-3 font-medium bg-gray-50">Filing Method</th>
                                             <th className="px-6 py-3 font-medium text-right bg-gray-50">Actions</th>
                                         </tr>
                                     </thead>
@@ -1725,7 +1821,7 @@ body { font-family: 'Inter', sans-serif; }
                                                     <div className="font-medium text-gray-900">{g.branch}</div>
                                                     <div className="text-xs text-gray-500 font-mono">{g.id}</div>
                                                 </td>
-                                                <td className="px-6 py-4 text-xs text-gray-500 whitespace-nowrap">
+                                                <td className="px-6 py-4 text-xs text-gray-500 whitespace-nowrap text-right">
                                                     {g.returnPeriod || 'Nov 2025'}
                                                 </td>
                                                 <td className="px-6 py-4 text-right text-gray-900 font-mono text-xs">
@@ -1858,20 +1954,20 @@ body { font-family: 'Inter', sans-serif; }
                                 </button>
                                 <div className="absolute right-0 top-full mt-1 w-72 bg-white border border-gray-200 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
                                     <div className="p-2">
-                                        <div onClick={() => handleGlobalContextChange('PAN')} className={`p-2 rounded cursor-pointer flex items-center justify-between ${viewMode === 'PAN' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'}`}>
+                                        <div onClick={() => handleGlobalContextChange('PAN')} className={`p-2 rounded cursor-pointer flex items-center justify-between ${editingIndex === -1 ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'}`}>
                                             <span className="text-sm font-bold">All Branches (PAN)</span>
-                                            {viewMode === 'PAN' && <Check size={14} />}
+                                            {editingIndex === -1 && <Check size={14} />}
                                         </div>
                                         <div className="h-px bg-gray-100 my-2"></div>
                                         <p className="px-2 text-[10px] font-bold text-gray-400 uppercase mb-1">Select Specific Branch</p>
                                         <div className="max-h-48 overflow-y-auto">
                                             {gstins.map((g, idx) => (
-                                                <div key={g.id} onClick={() => handleGlobalContextChange('SINGLE', idx)} className={`p-2 rounded cursor-pointer flex items-center justify-between ${viewMode === 'SINGLE' && selectedGstinIndex === idx ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'}`}>
+                                                <div key={g.id} onClick={() => handleGlobalContextChange('SINGLE', idx)} className={`p-2 rounded cursor-pointer flex items-center justify-between ${editingIndex !== -1 && editingIndex === idx ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'}`}>
                                                     <div className="truncate">
                                                         <div className="text-sm font-medium">{g.branch}</div>
                                                         <div className="text-[10px] text-gray-500 font-mono">{g.id}</div>
                                                     </div>
-                                                    {viewMode === 'SINGLE' && selectedGstinIndex === idx && <Check size={14} />}
+                                                    {editingIndex !== -1 && editingIndex === idx && <Check size={14} />}
                                                 </div>
                                             ))}
                                         </div>
@@ -1908,8 +2004,5 @@ body { font-family: 'Inter', sans-serif; }
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);
 </script>
-
-```
-
 </body>
 </html>
